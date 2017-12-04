@@ -3527,7 +3527,7 @@ class primitive_iterator_t
         return *this;
     }
 
-    primitive_iterator_t operator++(int)
+    primitive_iterator_t const operator++(int)
     {
         auto result = *this;
         m_it++;
@@ -3540,7 +3540,7 @@ class primitive_iterator_t
         return *this;
     }
 
-    primitive_iterator_t operator--(int)
+    primitive_iterator_t const operator--(int)
     {
         auto result = *this;
         m_it--;
@@ -3851,7 +3851,7 @@ class iter_impl
     @brief post-increment (it++)
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    iter_impl operator++(int)
+    iter_impl const operator++(int)
     {
         auto result = *this;
         ++(*this);
@@ -3894,7 +3894,7 @@ class iter_impl
     @brief post-decrement (it--)
     @pre The iterator is initialized; i.e. `m_object != nullptr`.
     */
-    iter_impl operator--(int)
+    iter_impl const operator--(int)
     {
         auto result = *this;
         --(*this);
@@ -4300,7 +4300,7 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
     json_reverse_iterator(const base_iterator& it) noexcept : base_iterator(it) {}
 
     /// post-increment (it++)
-    json_reverse_iterator operator++(int)
+    json_reverse_iterator const operator++(int)
     {
         return static_cast<json_reverse_iterator>(base_iterator::operator++(1));
     }
@@ -4312,7 +4312,7 @@ class json_reverse_iterator : public std::reverse_iterator<Base>
     }
 
     /// post-decrement (it--)
-    json_reverse_iterator operator--(int)
+    json_reverse_iterator const operator--(int)
     {
         return static_cast<json_reverse_iterator>(base_iterator::operator--(1));
     }
@@ -6568,7 +6568,8 @@ class serializer
                         // the codepoint from the UTF-8 bytes
                         int codepoint = 0;
 
-                        assert(0 <= bytes and bytes <= 3);
+                        // bytes is unsigned type:
+                        assert(bytes <= 3);
                         switch (bytes)
                         {
                             case 0:
@@ -7046,7 +7047,6 @@ class json_pointer
         result.reference_tokens = {reference_tokens[0]};
         return result;
     }
-
 
     /*!
     @brief create and return a reference to the pointed to value
